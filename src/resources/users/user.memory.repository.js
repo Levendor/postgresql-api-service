@@ -1,4 +1,4 @@
-module.exports.UserMemoryRepository = class {
+export class UserMemoryRepository {
   getAll = async () => {
     const users = [
       {

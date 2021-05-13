@@ -1,14 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const swaggerUI = require('swagger-ui-express');
-const path = require('path');
-const YAML = require('yamljs');
-// const { createUserRouter } = require('./resources/users/user.router');
-// const { UserController } = require('./resources/users/user.controller');
-// const { UserService } = require('./resources/users/user.service');
-const { createUserRouter, UserController, UserService, UserMemoryRepository } = require('./resources/users/index.js');
+import express from 'express';
+import cors from 'cors';
+import swaggerUI from 'swagger-ui-express';
+import path from 'path';
+import YAML from 'yamljs';
+import { createUserRouter, UserController, UserService, UserMemoryRepository } from './resources/users/index.js';
+import { __dirname } from './common/config';
 
-module.exports.createApp = () => {
+export const createApp = () => {
   const app = express();
   const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
   

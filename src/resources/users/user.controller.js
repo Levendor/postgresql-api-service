@@ -1,6 +1,6 @@
-const { User } = require('./user.model');
+import { User } from './user.model';
 
-module.exports.UserController = class {
+export class UserController {
   constructor(userService) {
     this.userService = userService;
   }

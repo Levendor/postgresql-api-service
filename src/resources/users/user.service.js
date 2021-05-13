@@ -1,4 +1,4 @@
-module.exports.UserService = class {
+export class UserService {
   constructor(userRepository) {
     this.userRepository = userRepository;
   }
