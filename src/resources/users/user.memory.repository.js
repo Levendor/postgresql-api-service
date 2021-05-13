@@ -1,6 +1,14 @@
-const getAll = async () => {
-  // TODO: mock implementation. should be replaced during task development
-  return [];
-};
-
-module.exports = { getAll };
+module.exports.UserMemoryRepository = class {
+  getAll = async () => {
+    const users = [
+      {
+        id: "1234",
+        name: "gollum",
+        login: "abyrwalg",
+        password: 'passw0rd',
+      }
+    ];
+    // TODO: mock implementation. should be replaced during task development
+    return users;
+  };
+}

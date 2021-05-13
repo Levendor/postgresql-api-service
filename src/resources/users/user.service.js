@@ -1,5 +1,7 @@
-const usersRepo = require('./user.memory.repository');
+module.exports.UserService = class {
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
 
-const getAll = () => usersRepo.getAll();
-
-module.exports = { getAll };
+  getAll = () => this.userRepository.getAll();
+}
