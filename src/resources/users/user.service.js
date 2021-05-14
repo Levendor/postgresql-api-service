@@ -3,5 +3,5 @@ export class UserService {
     this.userRepository = userRepository;
   }
 
-  getAll = () => this.userRepository.getAll();
+  getAllUsers = () => this.userRepository.getAll();
 }
