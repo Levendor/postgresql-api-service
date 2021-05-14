@@ -1,14 +1,53 @@
+import { v4 as uuid } from 'uuid';
+import { database } from '../../database/index.js';
+
 export class UserMemoryRepository {
-  getAll = async () => {
-    const users = [
-      {
-        id: "1234",
-        name: "gollum",
-        login: "abyrwalg",
-        password: 'passw0rd',
-      }
-    ];
-    // TODO: mock implementation. should be replaced during task development
-    return users;
-  };
+  constructor() {
+    this.users = database.users;
+  }
+
+  getAllUsers = async () => this.users;
+
+  getUserById = async (userId) => this.users.find((user) => user.id === userId);
+
+  createUser = async (userBody) => {
+    const newUser = {
+      id: uuid(),
+      ...userBody,
+    }
+
+    this.users.push(newUser);
+
+    return newUser;
+  }
+
+  updateUser = async (userBody) => {
+    const userId = userBody.id;
+    const updatedUserIndex = this.users.findIndex((user) => user.id === userId);
+
+    if (updatedUserIndex === -1) throw Error('Not found error: no user matches this request');
+
+    const updatedUser = {
+      ...this.users[updatedUserIndex],
+      ...userBody
+    }
+
+    this.users[updatedUserIndex] = updatedUser;
+
+    return updatedUser;
+  }
+
+  deleteUser = async (userId) => {
+    const deletedUserIndex = this.users.findIndex((user) => user.id === userId);
+
+    if (deletedUserIndex === -1) throw Error('Not found error: no user matches this request');
+
+    const deletedUser = {
+      ...this.users[deletedUserIndex],
+    }
+
+    this.users.splice(deletedUserIndex, 1);
+
+    return deletedUser;
+  }
 }
