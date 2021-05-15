@@ -31,7 +31,7 @@ export const createApp = () => {
       next(err);
     }
 
-    process.stderr.write(err.message);
+    console.log(err.message);
     const { method, originalUrl, body, params } = req;
     const { name, message, stack } = err;
     res.status(500).json({
