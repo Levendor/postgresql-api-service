@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { User } from './user.model.js';
 import { database } from '../../database/index.js';
 
 export class UserMemoryRepository {
@@ -10,12 +10,12 @@ export class UserMemoryRepository {
 
   getUserById = async (userId) => {
     const foundedUser = this.users.find((user) => user.id === userId);
-    if (!foundedUser) throw Error('Not found error: no user matches this request');
+    if (!foundedUser) throw Error('Not Found Error: no user matches this request');
     return foundedUser;
   }
 
   createUser = async (userBody) => {
-    const newUser = { id: uuid(), ...userBody };
+    const newUser = new User(userBody);
     this.users.push(newUser);
     return newUser;
   }
@@ -23,7 +23,7 @@ export class UserMemoryRepository {
   updateUser = async (userBody) => {
     const userId = userBody.id;
     const updatedUserIndex = this.users.findIndex((user) => user.id === userId);
-    if (updatedUserIndex === -1) throw Error('Not found error: no user matches this request');
+    if (updatedUserIndex === -1) throw Error('Not Found Error: no user matches this request');
     const updatedUser = { ...this.users[updatedUserIndex], ...userBody };
     this.users[updatedUserIndex] = updatedUser;
     return updatedUser;
@@ -31,7 +31,7 @@ export class UserMemoryRepository {
 
   deleteUser = async (userId) => {
     const deletedUserIndex = this.users.findIndex((user) => user.id === userId);
-    if (deletedUserIndex === -1) throw Error('Not found error: no user matches this request');
+    if (deletedUserIndex === -1) throw Error('Not Found Error: no user matches this request');
     const deletedUser = { ...this.users[deletedUserIndex] };
     this.users.splice(deletedUserIndex, 1);
     return deletedUser;

@@ -1,5 +1,3 @@
-import { errorLogger } from "../../loggers/index.js";
-
 export class UserController {
   constructor(userService) {
     this.userService = userService;
@@ -10,21 +8,19 @@ export class UserController {
       const users = await this.userService.getAllUsers();
       res.json(users);
     } catch (error) {
-      errorLogger(error);
-      res.status(404).send(error.message);
-      next();
+      error.statusCode = 404;
+      next(error);
     }
   }
 
   getUserById = async (req, res, next) => {
     try {
-      const userId = req.params.id;
+      const { userId } = req.params;
       const foundedUser = await this.userService.getUserById(userId);
       res.json(foundedUser);
     } catch (error) {
-      errorLogger(error);
-      res.status(404).send(error.message);
-      next();
+      error.statusCode = 404;
+      next(error);
     }
   }
 
@@ -34,33 +30,31 @@ export class UserController {
       const createdUser = await this.userService.createUser(userBody);
       res.status(201).json(createdUser);
     } catch (error) {
-      errorLogger(error);
-      res.status(404).send(error.message);
-      next();
+      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
+      next(error);
     }
   }
 
   updateUser = async (req, res, next) => {
     try {
-      const userBody = { id: req.params.id, ...req.body };
+      const { userId } = req.params;
+      const userBody = { userId, ...req.body };
       const updatedUser = await this.userService.updateUser(userBody);
       res.json(updatedUser);
     } catch (error) {
-      errorLogger(error);
-      res.status(404).send(error.message);
-      next();
+      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
+      next(error);
     }
   }
 
   deleteUser = async (req, res, next) => {
     try {
-      const userId = req.params.id;
+      const { userId } = req.params;
       const deletedUser = await this.userService.deleteUser(userId);
       res.status(204).json(deletedUser);
     } catch (error) {
-      errorLogger(error);
-      res.status(404).send(error.message);
-      next();
+      error.statusCode = 404;
+      next(error);
     }
   }
 }

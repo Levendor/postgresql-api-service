@@ -152,28 +152,9 @@ export const inMemoryDatabase = {
     }
   ],
   boards: [
-    {
-      id: 'cad46f08-ff8b-4496-aa9d-d375c0fd6b04',
-      title: 'board1',
-      columns: []
-    },
   ],
   columns: [
-    {
-      id: 'cad46f08-ff8b-4496-aa9d-d375c0fd6b05',
-      title: 'column1',
-      order: 0,
-    }
   ],
   tasks: [
-    {
-      id: 'cad46f08-ff8b-4496-aa9d-d375c0fd6b06',
-      title: 'task1',
-      order: 0,
-      description: 'Lorem ipsum',
-      userId: null,
-      boardId: null,
-      columnId: null,
-    }
   ],
 }

@@ -4,7 +4,10 @@ import swaggerUI from 'swagger-ui-express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import YAML from 'yamljs';
-import { createUserRouter, UserController, UserService, UserMemoryRepository } from './resources/users/index.js';
+
+import { createUserRouter, UserController, UserService, UserRepository } from './resources/users/index.js';
+import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards/index.js';
+import { errorHandler } from './middlewares/error-handler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,26 +27,10 @@ export const createApp = () => {
     next();
   });
   
-  app.use('/users', createUserRouter(new UserController(new UserService(new UserMemoryRepository))));
+  app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository))));
+  app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository))))
 
-  app.use((err, req, res, next) => {
-    if (res.headerSent) {
-      next(err);
-    }
-
-    console.log(err.message);
-    const { method, originalUrl, body, params } = req;
-    const { name, message, stack } = err;
-    res.status(500).json({
-      method,
-      originalUrl,
-      body,
-      params,
-      name,
-      message,
-      stack
-    })
-  })
+  app.use(errorHandler);
 
   return app;
 }
