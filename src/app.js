@@ -7,6 +7,7 @@ import YAML from 'yamljs';
 
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users/index.js';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards/index.js';
+import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks/index.js';
 import { errorHandler } from './middlewares/error-handler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,7 @@ export const createApp = () => {
   
   app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository))));
   app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository))))
+  app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(new TaskRepository))))
 
   app.use(errorHandler);
 

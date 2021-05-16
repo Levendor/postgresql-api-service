@@ -30,7 +30,7 @@ export class BoardController {
       const createdBoard = await this.boardService.createBoard(boardBody);
       res.status(201).json(createdBoard);
     } catch (error) {
-      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
+      error.statusCode = 404;
       next(error);
     }
   }
@@ -42,7 +42,7 @@ export class BoardController {
       const updatedBoard = await this.boardService.updateBoard(boardBody);
       res.json(updatedBoard);
     } catch (error) {
-      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
+      error.statusCode = 404;
       next(error);
     }
   }

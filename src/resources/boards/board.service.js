@@ -14,17 +14,11 @@ export class BoardService {
   }
 
   createBoard = async (boardBody) => {
-    // const boards = await this.boardRepository.getAllBoards();
-    // // const isDuplicatedTitle = boards.some((board) => board.title === boardBody.title)
-    // // if (isDuplicatedTitle) throw Error('Bad Request Error: title is occupied');
     const newBoard = await this.boardRepository.createBoard(boardBody);
     return newBoard;
   }
 
   updateBoard = async (boardBody) => {
-    const boards = await this.boardRepository.getAllBoards();
-    const isDuplicatedTitle = boards.some((board) => board.title === boardBody.title && board.id !== boardBody.id);
-    if (isDuplicatedTitle) throw Error('Bad Request Error: title is occupied');
     const updatedBoard = await this.boardRepository.updateBoard(boardBody);
     return updatedBoard;
   }

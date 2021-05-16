@@ -153,8 +153,6 @@ export const inMemoryDatabase = {
   ],
   boards: [
   ],
-  columns: [
-  ],
   tasks: [
   ],
 }
