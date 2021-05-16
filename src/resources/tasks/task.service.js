@@ -4,7 +4,7 @@ export class TaskService {
   }
 
   getAllTasks = async (boardId) => {
-    const tasks = this.taskRepository.getAllTasks(boardId);
+    const tasks = this.taskRepository.getAllBoardTasks(boardId);
     return tasks;
   };
 

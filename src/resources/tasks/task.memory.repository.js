@@ -6,16 +6,21 @@ export class TaskMemoryRepository {
     this.tasks = database.tasks;
   }
 
-  getAllTasks = async (boardId) => {
+  getAllTasks = async () => this.tasks;
+
+  getAllUserTasks = async (userId) => {
+    const userTasks = this.tasks.filter((task) => task.userId === userId);
+    return userTasks;
+  }
+
+  getAllBoardTasks = async (boardId) => {
     const boardTasks = this.tasks.filter((task) => task.boardId === boardId);
-    if (!boardTasks.length) throw Error('Not Found Error: no tasks match this request');
     return boardTasks;
   };
 
   getTaskById = async (boardId, taskId) => {
     const foundedTask = this.tasks.find((task) => task.id === taskId && task.boardId === boardId);
     if (!foundedTask) throw Error('Not Found Error: no task matches this request');
-    console.log(foundedTask);
     return foundedTask;
   }
 

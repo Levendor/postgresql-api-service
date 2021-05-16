@@ -1,6 +1,7 @@
 export class BoardService {
-  constructor(boardRepository) {
+  constructor(boardRepository, taskRepository) {
     this.boardRepository = boardRepository;
+    this.taskRepository = taskRepository;
   }
 
   getAllBoards = async () => {
@@ -25,7 +26,12 @@ export class BoardService {
 
   deleteBoard = async (boardId) => {
     const deletedBoard = await this.boardRepository.deleteBoard(boardId);
-    // TODO: delete all tasks of deleted board
+    const boardTasks = await this.taskRepository.getAllBoardTasks(boardId);
+    if (boardTasks.length) {
+      boardTasks.forEach(async (task) => {
+        await this.taskRepository.deleteTask(boardId, task.id);
+      });
+    }
     return deletedBoard;
   }
 }

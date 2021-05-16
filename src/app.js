@@ -27,10 +27,12 @@ export const createApp = () => {
     }
     next();
   });
+
+  const taskRepository = new TaskRepository;
   
-  app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository))));
-  app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository))))
-  app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(new TaskRepository))))
+  app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository, taskRepository))));
+  app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository, taskRepository))))
+  app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(taskRepository))))
 
   app.use(errorHandler);
 

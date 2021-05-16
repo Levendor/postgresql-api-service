@@ -1,8 +1,9 @@
 import { User } from './user.model.js';
 
 export class UserService {
-  constructor(userRepository) {
+  constructor(userRepository, taskRepository) {
     this.userRepository = userRepository;
+    this.taskRepository = taskRepository;
   }
 
   getAllUsers = async () => {
@@ -33,7 +34,13 @@ export class UserService {
 
   deleteUser = async (userId) => {
     const deletedUser = await this.userRepository.deleteUser(userId);
-    // TODO: delete all records of userId in assigned tasks
+    const userTasks = await this.taskRepository.getAllUserTasks(userId);
+    if (userTasks.length) {
+      userTasks.forEach(async (task) => {
+        const updatedTask = { ...task, userId: null };
+        await this.taskRepository.updateTask(task.boardId, updatedTask)
+      })
+    }
     return User.toResponse(deletedUser);
   }
 }
