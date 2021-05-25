@@ -5,7 +5,7 @@
     "type": "git",
     "url": ""
   },
-  "type": "commonjs",
+  "type": "module",
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
@@ -25,7 +25,7 @@
   ],
   "license": "ISC",
   "engines": {
-    "node": ">=14.0.0 <15"
+    "node": ">=14.0.0 <=15"
   },
   "jest": {
     "testEnvironment": "node",
@@ -35,7 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npx lint-staged"
     }
   },
   "lint-staged": {
@@ -44,6 +44,7 @@
     ]
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "cross-env": "7.0.3",
     "dotenv": "9.0.0",
     "express": "4.17.1",
@@ -52,6 +53,7 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "chai": "4.3.4",
     "debug": "4.3.1",
     "dirty-chai": "2.0.1",
