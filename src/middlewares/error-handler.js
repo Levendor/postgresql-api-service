@@ -1,3 +1,11 @@
+/**
+ * @function
+ * @param {Error} err Error Object
+ * @param {Request} req Request Object
+ * @param {Response} res Response Object
+ * @param {NextFunction} next Function to transfer to next middleware
+ * @returns {void}
+ */
 export const errorHandler = (err, req, res, next) => {
   if (res.headerSent) next(err);
 
