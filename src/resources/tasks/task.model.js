@@ -1,9 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-export class Task {
   /**
    * Task Entity
-   * @constructor
+   * @class
    * @param {Object} taskBody - An object with Task fields
    * @param {string} taskBody.id
    * @param {string} taskBody.title
@@ -15,12 +14,13 @@ export class Task {
    * 
    * @property {string} id - UUID string
    * @property {string} title - Name of board
-   * @property {number} taskBody.order - Order of task in column
-   * @property {string} taskBody.description - Task description
-   * @property {string | null} taskBody.userId - Id of assigned user
-   * @property {string | null} taskBody.boardId - Id of board
-   * @property {string | null} taskBody.columnId - Id of column
+   * @property {number} order - Order of task in column
+   * @property {string} description - Task description
+   * @property {string | null} userId - Id of assigned user
+   * @property {string | null} boardId - Id of board
+   * @property {string | null} columnId - Id of column
    */
+export class Task {
   constructor({
     id = uuid(),
     title = 'TASK',

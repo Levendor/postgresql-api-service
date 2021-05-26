@@ -1,5 +1,5 @@
 /**
- * A class to represent a service to operate with Board repository
+ * A class to represent a service to operate with Task repository
  * @class
  * @property {TaskRepository} taskRepository - an instance of Task Repository
  */
