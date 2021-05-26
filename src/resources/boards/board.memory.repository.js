@@ -25,6 +25,7 @@ export class BoardMemoryRepository {
    * @method
    * @param {string} boardId - Id of requested board
    * @returns {Promise<Board>} Requested board instance
+   * @throws {NotFoundError} If no board founded
    */
   getBoardById = async (boardId) => {
     const foundedBoard = this.boards.find((board) => board.id === boardId);
@@ -51,6 +52,7 @@ export class BoardMemoryRepository {
    * @method 
    * @param {Object.<Board>} boardBody - Object with some Board fields
    * @returns {Promise<Board>}
+   * @throws {NotFoundError} If no board founded
    */
   updateBoard = async (boardBody) => {
     const boardId = boardBody.id;
@@ -67,6 +69,7 @@ export class BoardMemoryRepository {
    * @method
    * @param {string} boardId - Id of board to delete
    * @returns {Promise<Board>}
+   * @throws {NotFoundError} If no board founded
    */
   deleteBoard = async (boardId) => {
     const deletedBoardIndex = this.boards.findIndex((board) => board.id === boardId);

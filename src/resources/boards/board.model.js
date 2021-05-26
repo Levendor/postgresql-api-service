@@ -5,6 +5,7 @@ export class Board {
    * Board Entity
    * @constructor
    * @param {Object} boardBody - An object with Board fields
+   * @param {string} boardBody.id
    * @param {string} boardBody.title
    * @param {Column[] | null} boardBody.columns
    * 
