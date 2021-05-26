@@ -1,4 +1,5 @@
 /**
+ * An express middleware to catch errors, logging them and send a proper response and status code to client side
  * @function
  * @param {Error} err Error Object
  * @param {Request} req Request Object
