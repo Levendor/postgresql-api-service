@@ -1,4 +1,6 @@
-export const inMemoryDatabase = {
+import { IDatabase } from "../types";
+
+export const inMemoryDatabase: IDatabase = {
   users: [
   ],
   boards: [

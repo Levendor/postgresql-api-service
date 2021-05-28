@@ -25,10 +25,9 @@ export class BoardMemoryRepository {
 
   updateBoard = async (boardBody: TBoardBody): Promise<Board> => {
     const boardId = boardBody.id;
-    const updatedBoardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (updatedBoardIndex === -1) throw Error('Not Found Error: no board matches this request');
-    const updatedBoard = { ...this.boards[updatedBoardIndex], ...boardBody };
-    this.boards[updatedBoardIndex] = updatedBoard;
+    const boardToUpdate = this.boards.find((board) => board.id === boardId);
+    if (!boardToUpdate) throw Error('Not Found Error: no board matches this request');
+    const updatedBoard = Object.assign(boardToUpdate, boardBody);
     return updatedBoard;
   }
 

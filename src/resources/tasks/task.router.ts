@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import { TaskController } from './task.controller';
 
-export const createTaskRouter = (taskController) => {
+export const createTaskRouter = (taskController: TaskController) => {
   const taskRouter = Router({ mergeParams: true });
   taskRouter.get('/', taskController.getAllTasks);
   taskRouter.get('/:taskId', taskController.getTaskById);

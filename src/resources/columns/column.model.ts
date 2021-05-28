@@ -1,17 +1,14 @@
 import { v4 as uuid } from 'uuid';
+import { IColumn, TColumnBody } from '../../types';
 
-export class Column {
+export class Column implements IColumn {
   id: string;
   title: string;
   order: number;
 
-  constructor({
-    id = uuid(),
-    title = 'COLUMN',
-    order  = 0,
-  } = {}) {
-    this.id = id;
-    this.title = title;
-    this.order = order;
+  constructor(columnBody: TColumnBody) {
+    this.id = columnBody.id || uuid();
+    this.title = columnBody.title || 'COLUMN';
+    this.order = columnBody.order || 0;
   }
 }

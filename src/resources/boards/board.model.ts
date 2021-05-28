@@ -1,19 +1,14 @@
 import { v4 as uuid } from 'uuid';
-import { TBoardBody } from '../../types';
-import { Column } from '../columns';
+import { IBoard, IColumn, TBoardBody } from '../../types';
 
-export class Board {
+export class Board implements IBoard {
   id: string;
   title: string;
-  columns: Column[] | null;
+  columns: IColumn[] | null;
 
-  constructor({
-    id = uuid(),
-    title = 'BOARD',
-    columns = null
-  }: TBoardBody) {
-    this.id = id;
-    this.title = title;
-    this.columns = columns;
+  constructor(boardBody: TBoardBody = {}) {
+    this.id = boardBody.id || uuid();
+    this.title = boardBody.title || 'BOARD';
+    this.columns = boardBody.columns || null;
   }
 }
