@@ -1,75 +1,42 @@
-/**
- * A class to represent a service to operate with Board repository
- * @class
- * @property {BoardRepository} boardRepository - an instance of Board Repository
- * @property {TaskRepository} taskRepository - an instance of Task Repository
- */
+import { IRepository, TBoardBody } from "../../types";
+import { TaskMemoryRepository } from "../tasks/task.memory.repository";
+import { Board } from "./board.model";
+
 export class BoardService {
-  constructor(boardRepository, taskRepository) {
-    this.boardRepository = boardRepository;
+  taskRepository: TaskMemoryRepository;
+  boardRepository: IRepository<Board>;
+  
+  constructor(taskRepository: TaskMemoryRepository, boardRepository: IRepository<Board>) {
     this.taskRepository = taskRepository;
+    this.boardRepository = boardRepository;
   }
 
-  /**
-   * Get list of all boards
-   * @async
-   * @method
-   * @returns {Promise<Board[]>} List of all boards
-   */
-  getAllBoards = async () => {
-    const boards = this.boardRepository.getAllBoards();
+  getAllBoards = async (): Promise<Board[]> => {
+    const boards = this.boardRepository.getAll();
     return boards;
   };
 
-  /**
-   * Get single board by its id
-   * @async
-   * @method
-   * @param {string} boardId - Id of requested board
-   * @returns {Promise<Board>} Requested board instance
-   */
-  getBoardById = async (boardId) => {
-    const board = await this.boardRepository.getBoardById(boardId);
+  getBoardById = async (boardId: string): Promise<Board> => {
+    const board = await this.boardRepository.getById(boardId);
     return board;
   }
 
-  /**
-   * Create a new Board in database
-   * @async
-   * @method
-   * @param {Object.<Board>} boardBody - Object with Board fields
-   * @returns {Promise<Board>} New instance of Board
-   */
-  createBoard = async (boardBody) => {
-    const newBoard = await this.boardRepository.createBoard(boardBody);
+  createBoard = async (boardBody: TBoardBody): Promise<Board> => {
+    const newBoard = await this.boardRepository.create(boardBody);
     return newBoard;
   }
 
-  /**
-   * Update an existed board in database by its id
-   * @async
-   * @method 
-   * @param {Object.<Board>} boardBody - Object with some Board fields
-   * @returns {Promise<Board>}
-   */
-  updateBoard = async (boardBody) => {
-    const updatedBoard = await this.boardRepository.updateBoard(boardBody);
+  updateBoard = async (boardBody: TBoardBody): Promise<Board> => {
+    const updatedBoard = await this.boardRepository.update(boardBody);
     return updatedBoard;
   }
 
-  /**
-   * Delete an existed board in database by its id and all its tasks
-   * @async
-   * @method
-   * @param {string} boardId - Id of board to delete
-   * @returns {Promise<Board>}
-   */
-  deleteBoard = async (boardId) => {
-    const deletedBoard = await this.boardRepository.deleteBoard(boardId);
-    const boardTasks = await this.taskRepository.getAllBoardTasks(boardId);
+  deleteBoard = async (boardId: string): Promise<Board> => {
+    const deletedBoard = await this.boardRepository.delete(boardId);
+    const boardTasks = await this.taskRepository.getAllFromBoard(boardId);
     if (boardTasks.length) {
       boardTasks.forEach(async (task) => {
-        await this.taskRepository.deleteTask(boardId, task.id);
+        await this.taskRepository.delete(task.id, boardId);
       });
     }
     return deletedBoard;

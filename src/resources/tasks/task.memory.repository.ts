@@ -1,8 +1,8 @@
 import { Task } from './task.model.js';
 import { database } from '../../database/index.js';
-import { IRepositoryExtended, TTaskBody } from '../../types/index.js';
+import { TTaskBody } from '../../types/index.js';
 
-export class TaskMemoryRepository implements IRepositoryExtended<Task> {
+export class TaskMemoryRepository {
   entities: Task[];
 
   constructor() {

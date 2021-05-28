@@ -1,10 +1,11 @@
-import { IRepositoryExtended, TTaskBody } from "../../types";
+import { TTaskBody } from "../../types";
+import { TaskMemoryRepository } from "./task.memory.repository";
 import { Task } from "./task.model";
 
 export class TaskService {
-  taskRepository: IRepositoryExtended<Task>;
+  taskRepository: TaskMemoryRepository;
 
-  constructor(taskRepository: IRepositoryExtended<Task>) {
+  constructor(taskRepository: TaskMemoryRepository) {
     this.taskRepository = taskRepository;
   }
 
