@@ -11,10 +11,18 @@
     "node": true
   },
   "parserOptions": {
-      "sourceType": "module"
+      "project": "./tsconfig.json",
+      "sourceType": "module",
+      "ecmaVersion": 2020,
+      "ecmaFeatures": {
+        "impliedStrict": true
+      }
   },
   "settings": {
-    "noInlineConfig": true
+    "noInlineConfig": true,
+    "node": {
+      "tryExtensions": [".js", ".json", ".node", ".ts", ".d.ts"]
+    }
   },
   "extends": [
     "eslint:recommended",

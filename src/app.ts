@@ -1,17 +1,13 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path';
 import YAML from 'yamljs';
 
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards';
 import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks';
 import { errorHandler } from './middlewares';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 export const createApp = (): Express => {
   const app = express();
