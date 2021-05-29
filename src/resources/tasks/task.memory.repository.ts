@@ -1,6 +1,6 @@
-import { Task } from './task.model.js';
-import { database } from '../../database/index.js';
-import { TTaskBody } from '../../types/index.js';
+import { Task } from './';
+import { database } from '../../database';
+import { TTaskBody } from '../../types';
 
 export class TaskMemoryRepository {
   entities: Task[];
@@ -9,17 +9,10 @@ export class TaskMemoryRepository {
     this.entities = database.tasks;
   }
 
-  getAll = async (): Promise<Task[]> => this.entities;
-
-  getAllFromUser = async (userId: string): Promise<Task[]> => {
-    const userTasks = this.entities.filter((task) => task.userId === userId);
-    return userTasks;
+  getAll = async (key?: string, id?: string): Promise<Task[]> => {
+    const tasks = key ? this.entities.filter((task) => task[key] === id) : this.entities;
+    return tasks;
   }
-
-  getAllFromBoard = async (boardId: string): Promise<Task[]> => {
-    const boardTasks = this.entities.filter((task) => task.boardId === boardId);
-    return boardTasks;
-  };
 
   getById = async (taskId: string, boardId: string): Promise<Task> => {
     const foundedTask = this.entities.find((task) => task.id === taskId && task.boardId === boardId);
@@ -33,7 +26,7 @@ export class TaskMemoryRepository {
     return newTask;
   }
 
-  update = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  update = async (taskBody: TTaskBody, boardId: string | null): Promise<Task> => {
     const taskId = taskBody.id;
     const taskToUpdate = this.entities.find((task) => task.id === taskId && task.boardId === boardId);
     if (!taskToUpdate) throw Error('Not Found Error: no task matches this request');
@@ -47,4 +40,14 @@ export class TaskMemoryRepository {
     const deletedTask = this.entities.splice(deletedTaskIndex, 1)[0]!;
     return deletedTask;
   }
+
+  // getAllFromUser = async (userId: string): Promise<Task[]> => {
+  //   const userTasks = this.entities.filter((task) => task.userId === userId);
+  //   return userTasks;
+  // }
+
+  // getAllFromBoard = async (boardId: string): Promise<Task[]> => {
+  //   const boardTasks = this.entities.filter((task) => task.boardId === boardId);
+  //   return boardTasks;
+  // };
 }

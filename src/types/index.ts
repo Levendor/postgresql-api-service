@@ -5,6 +5,7 @@ export interface IColumn {
 }
 
 export interface ITask {
+  [key: string]: string | number | null;
   id: string;
   title: string;
   order: number;
@@ -26,6 +27,8 @@ export interface IUser {
   login: string;
   password: string;
 }
+
+export type TUserToResponse = Omit<IUser, 'password'>;
 
 export type TColumnBody = Partial<IColumn>;
 

@@ -1,9 +1,14 @@
+import { Request, Response, NextFunction } from "express";
+import { UserService } from "./user.service";
+
 export class UserController {
-  constructor(userService) {
+  userService: UserService;
+
+  constructor(userService: UserService) {
     this.userService = userService;
   }
 
-  getAllUsers = async (req, res, next) => {
+  getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this.userService.getAllUsers();
       res.json(users);
@@ -13,9 +18,10 @@ export class UserController {
     }
   }
 
-  getUserById = async (req, res, next) => {
+  getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
+      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
       const foundedUser = await this.userService.getUserById(userId);
       res.json(foundedUser);
     } catch (error) {
@@ -24,7 +30,7 @@ export class UserController {
     }
   }
 
-  createUser = async (req, res, next) => {
+  createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userBody = req.body;
       const createdUser = await this.userService.createUser(userBody);
@@ -35,9 +41,10 @@ export class UserController {
     }
   }
 
-  updateUser = async (req, res, next) => {
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
+      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
       const userBody = { userId, ...req.body };
       const updatedUser = await this.userService.updateUser(userBody);
       res.json(updatedUser);
@@ -47,9 +54,10 @@ export class UserController {
     }
   }
 
-  deleteUser = async (req, res, next) => {
+  deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
+      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
       const deletedUser = await this.userService.deleteUser(userId);
       res.status(204).json(deletedUser);
     } catch (error) {

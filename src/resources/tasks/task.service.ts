@@ -10,7 +10,7 @@ export class TaskService {
   }
 
   getAllTasks = async (boardId: string): Promise<Task[]> => {
-    const tasks = this.taskRepository.getAllFromBoard(boardId);
+    const tasks = this.taskRepository.getAll(boardId);
     return tasks;
   };
 

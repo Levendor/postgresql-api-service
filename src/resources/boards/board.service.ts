@@ -6,13 +6,13 @@ export class BoardService {
   taskRepository: TaskMemoryRepository;
   boardRepository: IRepository<Board>;
   
-  constructor(taskRepository: TaskMemoryRepository, boardRepository: IRepository<Board>) {
+  constructor(boardRepository: IRepository<Board>, taskRepository: TaskMemoryRepository) {
     this.taskRepository = taskRepository;
     this.boardRepository = boardRepository;
   }
 
   getAllBoards = async (): Promise<Board[]> => {
-    const boards = this.boardRepository.getAll();
+    const boards = await this.boardRepository.getAll();
     return boards;
   };
 
@@ -33,7 +33,7 @@ export class BoardService {
 
   deleteBoard = async (boardId: string): Promise<Board> => {
     const deletedBoard = await this.boardRepository.delete(boardId);
-    const boardTasks = await this.taskRepository.getAllFromBoard(boardId);
+    const boardTasks = await this.taskRepository.getAll('boardId', boardId);
     if (boardTasks.length) {
       boardTasks.forEach(async (task) => {
         await this.taskRepository.delete(task.id, boardId);

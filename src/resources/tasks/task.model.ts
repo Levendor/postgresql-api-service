@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { ITask, TTaskBody } from '../../types';
 
 export class Task implements ITask {
+  [key: string]: string | number | null;
   id: string;
   title: string;
   order: number;
