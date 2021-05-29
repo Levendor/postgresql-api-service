@@ -8,7 +8,7 @@ export class BoardController {
     this.boardService = boardService;
   }
 
-  getAllBoards = async (req: Request, res: Response, next: NextFunction) => {
+  getAllBoards = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const boards = await this.boardService.getAllBoards();
       res.json(boards);

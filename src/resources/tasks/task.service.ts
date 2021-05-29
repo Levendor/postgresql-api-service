@@ -15,7 +15,7 @@ export class TaskService {
   };
 
   getTaskById = async (taskId: string, boardId: string): Promise<Task> => {
-    const task = await this.taskRepository.getById(boardId, taskId);
+    const task = await this.taskRepository.getById(taskId, boardId);
     return task;
   }
 

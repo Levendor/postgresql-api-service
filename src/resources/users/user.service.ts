@@ -1,6 +1,6 @@
-import { IRepository, TUserBody, TUserToResponse } from '../../types/index.js';
-import { TaskMemoryRepository } from '../tasks/task.memory.repository.js';
-import { User } from './user.model.js';
+import { IRepository, TUserBody, TUserToResponse } from '../../types/index';
+import { TaskMemoryRepository } from '../tasks/task.memory.repository';
+import { User } from './';
 
 export class UserService {
   userRepository: IRepository<User>;
@@ -42,7 +42,7 @@ export class UserService {
     const userTasks = await this.taskRepository.getAll('userId', userId);
     if (userTasks.length) {
       userTasks.forEach(async (task) => {
-        const updatedTask = { userId: null };
+        const updatedTask = { ...task, userId: null };
         await this.taskRepository.update(updatedTask, task.boardId)
       })
     }
