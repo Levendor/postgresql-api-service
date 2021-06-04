@@ -7,7 +7,7 @@ import YAML from 'yamljs';
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards';
 import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks';
-import { errorHandler } from './middlewares';
+import { requestLogger, errorHandler } from './middlewares';
 
 export const createApp = (): Express => {
   const app = express();
@@ -26,6 +26,7 @@ export const createApp = (): Express => {
 
   const taskRepository = new TaskRepository;
   
+  app.use(requestLogger);
   app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository, taskRepository))));
   app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository, taskRepository))))
   app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(taskRepository))))
