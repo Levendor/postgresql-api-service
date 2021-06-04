@@ -22,9 +22,16 @@ const consoleTransport = new transports.Console({
   format: consoleFormat,
 });
 
-const fileTransport = new transports.File({
-  dirname: '../../log',
-  filename: 'error.log',
+const infoFileTransport = new transports.File({
+  dirname: './log/',
+  filename: 'logs.log',
+  level: 'info',
+  format: fileFormat,
+});
+
+const errorFileTransport = new transports.File({
+  dirname: './log/',
+  filename: 'errors.log',
   level: 'error',
   format: fileFormat,
 });
@@ -32,11 +39,13 @@ const fileTransport = new transports.File({
 const winstonLogger = createLogger({
   transports: [
     consoleTransport,
-    fileTransport,
+    infoFileTransport,
+    errorFileTransport,
   ],
 });
 
-export const logger = (level: string, header: string, message: Object): void => {
-  if (level === 'error') winstonLogger.error(`${header}\n${JSON.stringify(message, null, 2)}`);
-  else if (level === 'info') winstonLogger.info(`${header}\n${JSON.stringify(message, null, 2)}`);
+type keyOfLogger = keyof typeof winstonLogger;
+
+export const logger = (level: keyOfLogger, header: string, message: Object): void => {
+  winstonLogger[level](`${header}\n${JSON.stringify(message, null, 2)}`);
 }

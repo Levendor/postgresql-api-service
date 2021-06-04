@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
+import newError from 'http-errors';
+import { StatusCodes } from 'http-status-codes';
 import { UserService } from "./user.service";
+
+const { OK, CREATED, NO_CONTENT, BAD_REQUEST } = StatusCodes;
 
 export class UserController {
   userService: UserService;
@@ -11,9 +15,8 @@ export class UserController {
   getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this.userService.getAllUsers();
-      res.json(users);
+      res.status(OK).json(users);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -21,11 +24,10 @@ export class UserController {
   getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
-      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
+      if (!userId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const foundedUser = await this.userService.getUserById(userId);
-      res.json(foundedUser);
+      res.status(OK).json(foundedUser);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -34,9 +36,8 @@ export class UserController {
     try {
       const userBody = req.body;
       const createdUser = await this.userService.createUser(userBody);
-      res.status(201).json(createdUser);
+      res.status(CREATED).json(createdUser);
     } catch (error) {
-      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
       next(error);
     }
   }
@@ -44,12 +45,11 @@ export class UserController {
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
-      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
+      if (!userId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const userBody = { userId, ...req.body };
       const updatedUser = await this.userService.updateUser(userBody);
-      res.json(updatedUser);
+      res.status(OK).json(updatedUser);
     } catch (error) {
-      error.statusCode = error.message.startsWith('Bad') ? 400 : 404;
       next(error);
     }
   }
@@ -57,11 +57,10 @@ export class UserController {
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
-      if (!userId) return next(new Error('Bad Request Error: no boardId is provided'));
+      if (!userId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const deletedUser = await this.userService.deleteUser(userId);
-      res.status(204).json(deletedUser);
+      res.status(NO_CONTENT).json(deletedUser);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }

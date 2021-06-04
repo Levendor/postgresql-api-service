@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
+import newError from 'http-errors';
+import { StatusCodes } from 'http-status-codes';
 import { BoardService } from "./board.service";
+
+const { OK, CREATED, NO_CONTENT, BAD_REQUEST } = StatusCodes;
 
 export class BoardController {
   boardService: BoardService;
@@ -11,9 +15,8 @@ export class BoardController {
   getAllBoards = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const boards = await this.boardService.getAllBoards();
-      res.json(boards);
+      res.status(OK).json(boards);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -21,11 +24,10 @@ export class BoardController {
   getBoardById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
-      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
+      if (!boardId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const foundedBoard = await this.boardService.getBoardById(boardId);
-      res.json(foundedBoard);
+      res.status(OK).json(foundedBoard);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -34,9 +36,8 @@ export class BoardController {
     try {
       const boardBody = req.body;
       const createdBoard = await this.boardService.createBoard(boardBody);
-      res.status(201).json(createdBoard);
+      res.status(CREATED).json(createdBoard);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -44,12 +45,11 @@ export class BoardController {
   updateBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
-      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
+      if (!boardId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const boardBody = { boardId, ...req.body };
       const updatedBoard = await this.boardService.updateBoard(boardBody);
-      res.json(updatedBoard);
+      res.status(OK).json(updatedBoard);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
@@ -57,11 +57,11 @@ export class BoardController {
   deleteBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
-      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
+      console.log(boardId);
+      if (!boardId) throw newError(BAD_REQUEST, 'No boardId is provided');
       const deletedBoard = await this.boardService.deleteBoard(boardId);
-      res.status(204).json(deletedBoard);
+      res.status(NO_CONTENT).json(deletedBoard);
     } catch (error) {
-      error.statusCode = 404;
       next(error);
     }
   }
