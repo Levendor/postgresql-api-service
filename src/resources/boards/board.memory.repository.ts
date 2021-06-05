@@ -1,6 +1,10 @@
+import newError from 'http-errors';
+import { StatusCodes } from 'http-status-codes';
 import { Board } from './';
 import { database } from '../../database';
 import { IRepository, TBoardBody } from '../../types';
+
+const { NOT_FOUND } = StatusCodes;
 
 export class BoardMemoryRepository implements IRepository<Board> {
   entities: Board[];
@@ -13,7 +17,7 @@ export class BoardMemoryRepository implements IRepository<Board> {
 
   getById = async (boardId: string): Promise<Board> => {
     const foundedBoard = this.entities.find((board) => board.id === boardId);
-    if (!foundedBoard) throw Error('Not Found Error: no board matches this request');
+    if (!foundedBoard) throw newError(NOT_FOUND, 'No board matches this request');
     return foundedBoard;
   }
 
@@ -26,14 +30,14 @@ export class BoardMemoryRepository implements IRepository<Board> {
   update = async (boardBody: TBoardBody): Promise<Board> => {
     const boardId = boardBody.id;
     const boardToUpdate = this.entities.find((board) => board.id === boardId);
-    if (!boardToUpdate) throw Error('Not Found Error: no board matches this request');
+    if (!boardToUpdate) throw newError(NOT_FOUND, 'No board matches this request');
     const updatedBoard = Object.assign(boardToUpdate, boardBody);
     return updatedBoard;
   }
 
   delete = async (boardId: string): Promise<Board> => {
     const deletedBoardIndex = this.entities.findIndex((board) => board.id === boardId);
-    if (deletedBoardIndex === -1) throw Error('Not Found Error: no board matches this request');
+    if (deletedBoardIndex === -1) throw newError(NOT_FOUND, 'No board matches this request');
     const deletedBoard = this.entities.splice(deletedBoardIndex, 1)[0]!;
     return deletedBoard;
   }

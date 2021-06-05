@@ -1,19 +1,30 @@
 import { ErrorRequestHandler } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { logger } from '../common/logger';
+
+const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (res.headersSent) next(err);
 
-  const { method, originalUrl, body, params } = req;
-  const { name, message, stack, statusCode = 500 } = err;
+  const { method, originalUrl, body, query, params, headers, } = req;
+  const { name, message, stack, statusCode = INTERNAL_SERVER_ERROR } = err;
   const errorMessage = {
-    method,
-    originalUrl,
-    body,
-    params,
+    statusCode,
     name,
     message,
-    statusCode
+    method,
+    path: originalUrl,
+    body,
+    query,
+    params,
+    headers,
+    stack,
   }
-  console.log('--------------->', errorMessage);
-  res.status(statusCode).json({ ...errorMessage, stack })
+
+  logger('error', name, errorMessage);
+
+  res.status(statusCode).json(errorMessage)
+
+  return next();
 }
