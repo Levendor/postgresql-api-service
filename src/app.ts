@@ -3,12 +3,16 @@ import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
+import newError from 'http-errors';
 
+import './common/uncaught-exception';
 import './common/unhandled-rejection';
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards';
 import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks';
 import { serverIsRunning, requestLogger, errorHandler } from './middlewares';
+import { StatusCodes } from 'http-status-codes';
+const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
 export const createApp = (): Express => {
   const app = express();
@@ -26,11 +30,19 @@ export const createApp = (): Express => {
   app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository, taskRepository))));
   app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository, taskRepository))))
   app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(taskRepository))))
-  app.use('/reject', () => {
-    Promise.reject('Promise rejected!');
-  })
 
   app.use(errorHandler);
+
+  app.use('/reject', () => {
+    Promise.reject(newError(INTERNAL_SERVER_ERROR, 'Promise rejected!'));
+  })
+  app.use('/except', () => {
+    setTimeout(
+      () => {
+        throw newError(INTERNAL_SERVER_ERROR, 'Exception occurred!')
+      },
+      0);
+  });
 
   return app;
 }
