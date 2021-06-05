@@ -10,7 +10,7 @@ import './common/unhandled-rejection';
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards';
 import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks';
-import { serverIsRunning, requestLogger, errorHandler } from './middlewares';
+import { serverIsRunning, requestLogger, errorHandler, notFound } from './middlewares';
 import { StatusCodes } from 'http-status-codes';
 const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
@@ -30,6 +30,8 @@ export const createApp = (): Express => {
   app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository, taskRepository))));
   app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository, taskRepository))))
   app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(taskRepository))))
+
+  app.use(notFound);
 
   app.use(errorHandler);
 
