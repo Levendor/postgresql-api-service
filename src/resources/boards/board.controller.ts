@@ -1,9 +1,14 @@
+import { Request, Response, NextFunction } from "express";
+import { BoardService } from "./board.service";
+
 export class BoardController {
-  constructor(boardService) {
+  boardService: BoardService;
+
+  constructor(boardService: BoardService) {
     this.boardService = boardService;
   }
 
-  getAllBoards = async (req, res, next) => {
+  getAllBoards = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const boards = await this.boardService.getAllBoards();
       res.json(boards);
@@ -13,9 +18,10 @@ export class BoardController {
     }
   }
 
-  getBoardById = async (req, res, next) => {
+  getBoardById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
+      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
       const foundedBoard = await this.boardService.getBoardById(boardId);
       res.json(foundedBoard);
     } catch (error) {
@@ -24,7 +30,7 @@ export class BoardController {
     }
   }
 
-  createBoard = async (req, res, next) => {
+  createBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const boardBody = req.body;
       const createdBoard = await this.boardService.createBoard(boardBody);
@@ -35,9 +41,10 @@ export class BoardController {
     }
   }
 
-  updateBoard = async (req, res, next) => {
+  updateBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
+      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
       const boardBody = { boardId, ...req.body };
       const updatedBoard = await this.boardService.updateBoard(boardBody);
       res.json(updatedBoard);
@@ -47,9 +54,10 @@ export class BoardController {
     }
   }
 
-  deleteBoard = async (req, res, next) => {
+  deleteBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { boardId } = req.params;
+      if (!boardId) return next(new Error('Bad Request Error: no boardId is provided'));
       const deletedBoard = await this.boardService.deleteBoard(boardId);
       res.status(204).json(deletedBoard);
     } catch (error) {

@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import { BoardController } from './board.controller';
 
-export const createBoardRouter = (boardController) => {
+export const createBoardRouter = (boardController: BoardController) => {
   const boardRouter = Router();
   boardRouter.get('/', boardController.getAllBoards);
   boardRouter.get('/:boardId', boardController.getBoardById);

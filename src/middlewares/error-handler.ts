@@ -1,5 +1,7 @@
-export const errorHandler = (err, req, res, next) => {
-  if (res.headerSent) next(err);
+import { ErrorRequestHandler } from 'express';
+
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (res.headersSent) next(err);
 
   const { method, originalUrl, body, params } = req;
   const { name, message, stack, statusCode = 500 } = err;
