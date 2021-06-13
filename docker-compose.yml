@@ -3,6 +3,7 @@ version: 3.8'
 services:
   postgres:
     image: postgres
+    build: ./src/database
     networks:
       - task6
     container_name: postgres
@@ -21,8 +22,8 @@ services:
       - task6
     container_name: node
     volumes:
-      - ./log:/usr/src/app/log
-      - ./src:/usr/src/app/src
+      - log:/usr/src/app/log
+      - src:/usr/src/app/src
     restart: on-failure
     depends_on:
       - postgres
