@@ -6,6 +6,8 @@ services:
     networks:
       - task6
     container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -38,3 +40,5 @@ volumes:
     name: app-logs
   src: 
     name: app-src
+  pgdata:
+    name: app-dbdata
