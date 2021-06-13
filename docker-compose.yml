@@ -2,7 +2,7 @@ version: 3.8'
 
 services:
   postgres:
-    build: ./src/database
+    image: postgres
     networks:
       - task6
     container_name: postgres
@@ -13,11 +13,14 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
   node:
-    build: .
+    image: node
+    build: ./
     networks:
       - task6
     container_name: node
-
+    volumes:
+      - ./log:/usr/src/app/log
+      - ./src:/usr/src/app/src
     restart: always
     depends_on:
       - postgres
@@ -29,3 +32,9 @@ services:
 networks:
   task6:
     driver: bridge
+
+volumes:
+  log: 
+    name: app-logs
+  src: 
+    name: app-src
