@@ -22,8 +22,8 @@ services:
       - task6
     container_name: node
     volumes:
-      - log:/usr/src/app/log
-      - src:/usr/src/app/src
+      - ./log:/usr/src/app/log
+      - ./src:/usr/src/app/src
     restart: on-failure
     depends_on:
       - postgres
@@ -37,9 +37,5 @@ networks:
     driver: bridge
 
 volumes:
-  log: 
-    name: app-logs
-  src: 
-    name: app-src
   pgdata:
     name: app-dbdata
