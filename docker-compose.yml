@@ -25,6 +25,8 @@ services:
       - ./log:/usr/src/app/log
       - ./src:/usr/src/app/src
     restart: on-failure
+    links:
+      - postgres
     depends_on:
       - postgres
     ports:

@@ -2,7 +2,7 @@ import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { Task } from './';
 import { database } from '../../database';
-import { TTaskBody } from '../../types';
+import { TTaskDTO } from '../../types';
 
 const { NOT_FOUND } = StatusCodes;
 
@@ -24,13 +24,13 @@ export class TaskMemoryRepository {
     return foundedTask;
   }
 
-  create = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  create = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const newTask = new Task({ ...taskBody, boardId });
     this.entities.push(newTask);
     return newTask;
   }
 
-  update = async (taskBody: TTaskBody, boardId: string | null): Promise<Task> => {
+  update = async (taskBody: TTaskDTO, boardId: string | null): Promise<Task> => {
     const taskId = taskBody.id;
     const taskToUpdate = this.entities.find((task) => task.id === taskId && task.boardId === boardId);
     if (!taskToUpdate) throw newError(NOT_FOUND, 'No task matches this request');

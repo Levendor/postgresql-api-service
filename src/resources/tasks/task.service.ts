@@ -1,16 +1,17 @@
-import { TTaskBody } from "../../types";
-import { TaskMemoryRepository } from "./task.memory.repository";
+import { TTaskDTO } from "../../types";
+// import { TaskMemoryRepository } from "./task.memory.repository";
 import { Task } from "./task.model";
+import { TaskPostgresRepository } from "./task.postgres.repository";
 
 export class TaskService {
-  taskRepository: TaskMemoryRepository;
+  taskRepository: TaskPostgresRepository;
 
-  constructor(taskRepository: TaskMemoryRepository) {
+  constructor(taskRepository: TaskPostgresRepository) {
     this.taskRepository = taskRepository;
   }
 
   getAllTasks = async (boardId: string): Promise<Task[]> => {
-    const tasks = this.taskRepository.getAll(boardId);
+    const tasks = this.taskRepository.getAll('boardId', boardId);
     return tasks;
   };
 
@@ -19,12 +20,12 @@ export class TaskService {
     return task;
   }
 
-  createTask = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  createTask = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const newTask = await this.taskRepository.create(taskBody, boardId);
     return newTask;
   }
 
-  updateTask = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  updateTask = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const updatedTask = await this.taskRepository.update(taskBody, boardId);
     return updatedTask;
   }

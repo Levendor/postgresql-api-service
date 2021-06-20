@@ -1,16 +1,17 @@
 import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
-import { IRepository, TUserBody, TUserToResponse } from '../../types/index';
-import { TaskMemoryRepository } from '../tasks/task.memory.repository';
+import { IRepository, TUserDTO, TUserToResponse } from '../../types/index';
+// import { TaskMemoryRepository } from '../tasks/task.memory.repository';
+import { TaskPostgresRepository } from '../tasks/task.postgres.repository';
 import { User } from './';
 
 const { BAD_REQUEST } = StatusCodes;
 
 export class UserService {
   userRepository: IRepository<User>;
-  taskRepository: TaskMemoryRepository;
+  taskRepository: TaskPostgresRepository;
 
-  constructor(userRepository: IRepository<User>, taskRepository: TaskMemoryRepository) {
+  constructor(userRepository: IRepository<User>, taskRepository: TaskPostgresRepository) {
     this.userRepository = userRepository;
     this.taskRepository = taskRepository;
   }
@@ -25,7 +26,7 @@ export class UserService {
     return User.toResponse(user);
   }
 
-  createUser = async (userBody: TUserBody): Promise<TUserToResponse> => {
+  createUser = async (userBody: TUserDTO): Promise<TUserToResponse> => {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login)
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
@@ -33,7 +34,7 @@ export class UserService {
     return User.toResponse(newUser);
   }
 
-  updateUser = async (userBody: TUserBody): Promise<TUserToResponse> => {
+  updateUser = async (userBody: TUserDTO): Promise<TUserToResponse> => {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login && user.id !== userBody.id);
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
@@ -46,8 +47,7 @@ export class UserService {
     const userTasks = await this.taskRepository.getAll('userId', userId);
     if (userTasks.length) {
       userTasks.forEach(async (task) => {
-        const updatedTask = { ...task, userId: null };
-        await this.taskRepository.update(updatedTask, task.boardId)
+        await this.taskRepository.update({ ...task, userId: undefined }, task.boardId)
       })
     }
     return User.toResponse(deletedUser);

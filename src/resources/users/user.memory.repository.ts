@@ -2,7 +2,7 @@ import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { User } from './';
 import { database } from '../../database';
-import { IRepository, TUserBody } from '../../types';
+import { IRepository, TUserDTO } from '../../types';
 
 const { NOT_FOUND } = StatusCodes;
 
@@ -21,13 +21,13 @@ export class UserMemoryRepository implements IRepository<User> {
     return foundedUser;
   }
 
-  create = async (userBody: TUserBody): Promise<User> => {
+  create = async (userBody: TUserDTO): Promise<User> => {
     const newUser = new User(userBody);
     this.entities.push(newUser);
     return newUser;
   }
 
-  update = async (userBody: TUserBody): Promise<User> => {
+  update = async (userBody: TUserDTO): Promise<User> => {
     const userId = userBody.id;
     const userToUpdate = this.entities.find((user) => user.id === userId);
     if (!userToUpdate) throw newError(NOT_FOUND, 'No user matches this request');

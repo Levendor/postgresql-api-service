@@ -2,7 +2,7 @@ import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { Board } from './';
 import { database } from '../../database';
-import { IRepository, TBoardBody } from '../../types';
+import { IRepository, TBoardDTO } from '../../types';
 
 const { NOT_FOUND } = StatusCodes;
 
@@ -21,13 +21,13 @@ export class BoardMemoryRepository implements IRepository<Board> {
     return foundedBoard;
   }
 
-  create = async (boardBody: TBoardBody): Promise<Board> => {
+  create = async (boardBody: TBoardDTO): Promise<Board> => {
     const newBoard = new Board(boardBody);
     this.entities.push(newBoard);
     return newBoard;
   }
 
-  update = async (boardBody: TBoardBody): Promise<Board> => {
+  update = async (boardBody: TBoardDTO): Promise<Board> => {
     const boardId = boardBody.id;
     const boardToUpdate = this.entities.find((board) => board.id === boardId);
     if (!boardToUpdate) throw newError(NOT_FOUND, 'No board matches this request');
