@@ -1,6 +1,6 @@
-import { Entity, Column as TableColumn, PrimaryGeneratedColumn } from 'typeorm';
-import { IBoard, IColumn } from '../../types';
-// import { Column } from './';
+import { Entity, Column as TableColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { IBoard, IColumn, ITask } from '../../types';
+import { Column, Task } from './';
 
 @Entity('users')
 export class Board implements IBoard {
@@ -11,5 +11,9 @@ export class Board implements IBoard {
   title!:string;
 
   @TableColumn()
+  @OneToMany(() => Column, column => column.board)
   columns!: IColumn[] | null;
+  
+  @OneToMany(() => Task, task => task.boardId)
+  tasks!: ITask[];
 }

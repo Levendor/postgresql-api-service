@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IUser } from '../../types';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { ITask, IUser } from '../../types';
+import { Task } from './';
 
 @Entity('users')
 export class User implements IUser {
@@ -14,4 +15,7 @@ export class User implements IUser {
 
   @Column()
   password!: string
+  
+  @OneToMany(() => Task, task => task.userId)
+  tasks!: ITask[];
 }

@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column as TableColumn, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ITask } from '../../types';
+import { Board, Column, User } from './';
 
 @Entity('users')
 export class Task implements ITask {
@@ -8,21 +9,24 @@ export class Task implements ITask {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @TableColumn()
   title!:string;
 
-  @Column()
+  @TableColumn()
   order!: number;
 
-  @Column()
+  @TableColumn()
   description!: string
 
-  @Column()
+  @TableColumn()
+  @ManyToOne(() => User)
   userId!: string | null;
 
-  @Column()
+  @TableColumn()
+  @ManyToOne(() => Board)
   boardId!: string | null;
 
-  @Column()
+  @TableColumn()
+  @ManyToOne(() => Column)
   columnId!: string | null;
 }

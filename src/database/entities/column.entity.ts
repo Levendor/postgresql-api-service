@@ -1,5 +1,7 @@
-import { Entity, Column as TableColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column as TableColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Board } from '../../database/entities';
 import { IColumn } from '../../types';
+import { Task } from './task.entity';
 
 @Entity('users')
 export class Column implements IColumn {
@@ -11,4 +13,10 @@ export class Column implements IColumn {
 
   @TableColumn()
   order!: number;
+
+  @ManyToOne(() => Board, board => board.columns)
+  board!: Board;
+
+  @OneToMany(() => Task, task => task.columnId)
+  task!: Task;
 }
