@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { ITask, TTaskBody } from '../../types';
+import { ITask, TTaskDTO } from '../../types';
 
 export class Task implements ITask {
   [key: string]: string | number | null;
@@ -11,7 +11,7 @@ export class Task implements ITask {
   boardId: string | null;
   columnId: string | null;
 
-  constructor(taskBody: TTaskBody = {}) {
+  constructor(taskBody: TTaskDTO = {}) {
     this.id = taskBody.id || uuid();
     this.title = taskBody.title || 'TASK';
     this.order = taskBody.order || 0;

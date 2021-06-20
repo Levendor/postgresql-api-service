@@ -1,13 +1,13 @@
 import { v4 as uuid } from 'uuid';
-import { TUserBody, TUserToResponse } from '../../types';
+import { IUser, TUserDTO, TUserToResponse } from '../../types';
 
-export class User {
+export class User implements IUser {
   id: string;
   name: string;
   login: string;
   password: string;
 
-  constructor(userBody: TUserBody = {}) {
+  constructor(userBody: TUserDTO = {}) {
     this.id = userBody.id || uuid();
     this.name = userBody.name || 'USER';
     this.login = userBody.login || 'user';

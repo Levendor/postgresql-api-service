@@ -1,4 +1,4 @@
-import { TTaskBody } from "../../types";
+import { TTaskDTO } from "../../types";
 import { TaskMemoryRepository } from "./task.memory.repository";
 import { Task } from "./task.model";
 
@@ -19,12 +19,12 @@ export class TaskService {
     return task;
   }
 
-  createTask = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  createTask = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const newTask = await this.taskRepository.create(taskBody, boardId);
     return newTask;
   }
 
-  updateTask = async (taskBody: TTaskBody, boardId: string): Promise<Task> => {
+  updateTask = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const updatedTask = await this.taskRepository.update(taskBody, boardId);
     return updatedTask;
   }

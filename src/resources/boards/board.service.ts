@@ -1,4 +1,4 @@
-import { IRepository, TBoardBody } from "../../types";
+import { IRepository, TBoardDTO } from "../../types";
 import { TaskMemoryRepository } from "../tasks/task.memory.repository";
 import { Board } from "./board.model";
 
@@ -21,12 +21,12 @@ export class BoardService {
     return board;
   }
 
-  createBoard = async (boardBody: TBoardBody): Promise<Board> => {
+  createBoard = async (boardBody: TBoardDTO): Promise<Board> => {
     const newBoard = await this.boardRepository.create(boardBody);
     return newBoard;
   }
 
-  updateBoard = async (boardBody: TBoardBody): Promise<Board> => {
+  updateBoard = async (boardBody: TBoardDTO): Promise<Board> => {
     const updatedBoard = await this.boardRepository.update(boardBody);
     return updatedBoard;
   }

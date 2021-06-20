@@ -1,6 +1,6 @@
 import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
-import { IRepository, TUserBody, TUserToResponse } from '../../types/index';
+import { IRepository, TUserDTO, TUserToResponse } from '../../types/index';
 import { TaskMemoryRepository } from '../tasks/task.memory.repository';
 import { User } from './';
 
@@ -25,7 +25,7 @@ export class UserService {
     return User.toResponse(user);
   }
 
-  createUser = async (userBody: TUserBody): Promise<TUserToResponse> => {
+  createUser = async (userBody: TUserDTO): Promise<TUserToResponse> => {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login)
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
@@ -33,7 +33,7 @@ export class UserService {
     return User.toResponse(newUser);
   }
 
-  updateUser = async (userBody: TUserBody): Promise<TUserToResponse> => {
+  updateUser = async (userBody: TUserDTO): Promise<TUserToResponse> => {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login && user.id !== userBody.id);
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
