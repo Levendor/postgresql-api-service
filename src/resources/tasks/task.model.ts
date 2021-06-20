@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import { ITask, TTaskDTO } from '../../types';
+import { TTaskDTO } from '../../types';
 
-export class Task implements ITask {
+export class Task{
   [key: string]: string | number | null;
   id: string;
   title: string;

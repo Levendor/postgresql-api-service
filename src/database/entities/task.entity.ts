@@ -1,9 +1,9 @@
-import { Entity, Column as TableColumn, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { ITask } from '../../types';
-import { Board, Column, User } from './';
+import { Entity, Column as TableColumn, PrimaryGeneratedColumn } from 'typeorm';
+// import { ITask } from '../../types';
+// import { Board, Column, User } from './';
 
-@Entity('users')
-export class Task implements ITask {
+@Entity('tasks')
+export class Task {
   [key: string]: string | number | null;
 
   @PrimaryGeneratedColumn('uuid')
@@ -18,15 +18,15 @@ export class Task implements ITask {
   @TableColumn()
   description!: string
 
-  @TableColumn()
-  @ManyToOne(() => User)
-  userId!: string | null;
+  @TableColumn({ nullable: true})
+  // @ManyToOne(() => User)
+  userId!: string;
 
-  @TableColumn()
-  @ManyToOne(() => Board)
-  boardId!: string | null;
+  @TableColumn({ nullable: true})
+  // @ManyToOne(() => Board)
+  boardId!: string;
 
-  @TableColumn()
-  @ManyToOne(() => Column)
-  columnId!: string | null;
+  @TableColumn({ nullable: true})
+  // @ManyToOne(() => Column)
+  columnId!: string;
 }

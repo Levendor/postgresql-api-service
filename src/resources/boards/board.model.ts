@@ -4,11 +4,11 @@ import { IBoard, IColumn, TBoardDTO } from '../../types';
 export class Board implements IBoard {
   id: string;
   title: string;
-  columns: IColumn[] | null;
+  columns: IColumn[];
 
   constructor(boardBody: TBoardDTO = {}) {
     this.id = boardBody.id || uuid();
     this.title = boardBody.title || 'BOARD';
-    this.columns = boardBody.columns || null;
+    this.columns = boardBody.columns || [];
   }
 }

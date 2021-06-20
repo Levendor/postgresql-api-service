@@ -31,7 +31,7 @@ export class TaskPostgresRepository {
   }
 
   create = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
-    const newTask: Task = this.repository.create({
+    const newTask: Task =  this.repository.create({
       ...taskBody,
       boardId
     });
@@ -39,7 +39,7 @@ export class TaskPostgresRepository {
     return newTask;
   }
 
-  update = async (taskBody: TTaskDTO, boardId: string | null): Promise<Task> => {
+  update = async (taskBody: TTaskDTO, boardId: string): Promise<Task> => {
     const taskToUpdate = await this.repository.findOne({
       where: {
         id: taskBody.id,

@@ -1,6 +1,4 @@
 import { createConnection } from 'typeorm';
-
-import { connectionOptions } from './common/ormconfig'
 import { PORT as ENV_PORT } from './common/config';
 import { createApp } from './app';
 import { logger } from './common/logger';
@@ -27,6 +25,6 @@ const onError = (error: Error) => {
 // }
 
 // postgreSQL database connection
-createConnection(connectionOptions)
+createConnection()
   .then(onConnect)
   .catch(onError);

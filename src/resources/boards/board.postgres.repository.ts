@@ -2,11 +2,11 @@ import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { getRepository, Repository } from 'typeorm';
 import { Board } from '../../database/entities';
-import { IRepository, TBoardDTO } from '../../types';
+import { TBoardDTO } from '../../types';
 
 const { NOT_FOUND } = StatusCodes;
 
-export class BoardPostgresRepository implements IRepository<Board> {
+export class BoardPostgresRepository {
   repository: Repository<Board>;
   constructor() {
     this.repository = getRepository(Board);

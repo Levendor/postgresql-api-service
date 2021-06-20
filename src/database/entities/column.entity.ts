@@ -1,9 +1,9 @@
-import { Entity, Column as TableColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Board } from '../../database/entities';
+import { Entity, Column as TableColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { IColumn } from '../../types';
-import { Task } from './task.entity';
+// import { Board } from '../../database/entities';
+// import { Task } from './task.entity';
 
-@Entity('users')
+@Entity('columns')
 export class Column implements IColumn {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -14,9 +14,9 @@ export class Column implements IColumn {
   @TableColumn()
   order!: number;
 
-  @ManyToOne(() => Board, board => board.columns)
-  board!: Board;
+  // @ManyToOne(() => Board, board => board.columns)
+  // board!: Board;
 
-  @OneToMany(() => Task, task => task.columnId)
-  task!: Task;
+  // @OneToMany(() => Task, task => task.columnId)
+  // task!: Task;
 }

@@ -1,7 +1,7 @@
 import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { IRepository, TUserDTO, TUserToResponse } from '../../types/index';
-import { TaskMemoryRepository } from '../tasks/task.memory.repository';
+// import { TaskMemoryRepository } from '../tasks/task.memory.repository';
 import { TaskPostgresRepository } from '../tasks/task.postgres.repository';
 import { User } from './';
 
@@ -9,9 +9,9 @@ const { BAD_REQUEST } = StatusCodes;
 
 export class UserService {
   userRepository: IRepository<User>;
-  taskRepository: TaskMemoryRepository | TaskPostgresRepository;
+  taskRepository: TaskPostgresRepository;
 
-  constructor(userRepository: IRepository<User>, taskRepository: TaskMemoryRepository | TaskPostgresRepository) {
+  constructor(userRepository: IRepository<User>, taskRepository: TaskPostgresRepository) {
     this.userRepository = userRepository;
     this.taskRepository = taskRepository;
   }
@@ -47,7 +47,7 @@ export class UserService {
     const userTasks = await this.taskRepository.getAll('userId', userId);
     if (userTasks.length) {
       userTasks.forEach(async (task) => {
-        const updatedTask = { ...task, userId: null };
+        const updatedTask = { ...task, userId: undefined };
         await this.taskRepository.update(updatedTask, task.boardId)
       })
     }

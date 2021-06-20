@@ -10,15 +10,15 @@ export interface ITask {
   title: string;
   order: number;
   description: string;
-  userId: string | null;
-  boardId: string | null;
-  columnId: string | null;
+  userId: string;
+  boardId: string;
+  columnId: string;
 }
 
 export interface IBoard {
   id: string;
   title: string;
-  columns: IColumn[] | null;
+  columns: IColumn[];
 }
 
 export interface IUser {
