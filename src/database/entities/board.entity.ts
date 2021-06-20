@@ -10,7 +10,7 @@ export class Board implements IBoard {
   @TableColumn()
   title!:string;
 
-  @TableColumn({ type: 'simple-array', nullable: true })
+  @TableColumn({ type: 'json', array: false, nullable: true })
   // @OneToMany(() => Column, column => column.board)
   columns!: Column[];
   

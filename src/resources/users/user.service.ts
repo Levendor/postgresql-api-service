@@ -47,8 +47,7 @@ export class UserService {
     const userTasks = await this.taskRepository.getAll('userId', userId);
     if (userTasks.length) {
       userTasks.forEach(async (task) => {
-        const updatedTask = { ...task, userId: undefined };
-        await this.taskRepository.update(updatedTask, task.boardId)
+        await this.taskRepository.update({ ...task, userId: undefined }, task.boardId)
       })
     }
     return User.toResponse(deletedUser);

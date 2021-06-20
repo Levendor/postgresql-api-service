@@ -4,7 +4,7 @@ import { getRepository, Repository } from 'typeorm';
 import { Board } from '../../database/entities';
 import { TBoardDTO } from '../../types';
 
-const { NOT_FOUND } = StatusCodes;
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = StatusCodes;
 
 export class BoardPostgresRepository {
   repository: Repository<Board>;
@@ -33,7 +33,9 @@ export class BoardPostgresRepository {
   update = async (boardBody: TBoardDTO): Promise<Board> => {
     const boardToUpdate = await this.repository.findOne(boardBody.id);
     if (!boardToUpdate) throw newError(NOT_FOUND, 'No board matches this request');
-    const updatedBoard = await this.repository.save(boardBody);
+    await this.repository.save(boardBody);
+    const updatedBoard = await this.repository.findOne(boardBody.id);
+    if (!updatedBoard) throw newError(INTERNAL_SERVER_ERROR, 'Database malfunction');
     return updatedBoard;
   }
 

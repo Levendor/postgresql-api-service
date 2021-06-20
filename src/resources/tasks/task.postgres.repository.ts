@@ -13,10 +13,9 @@ export class TaskPostgresRepository {
   }
 
   getAll = async (key?: string, id?: string): Promise<Task[]> => {
-    const tasks = key ? this.repository.find({
-      where: { key: id }
-    }) : this.repository.find();
-    return tasks;
+    if (key === 'boardId') return this.repository.find({ where: { boardId: id } })
+    if (key === 'boardId') return this.repository.find({ where: { userId: id } })
+    return this.repository.find();
   }
 
   getById = async (taskId: string, boardId: string): Promise<Task> => {
@@ -59,6 +58,7 @@ export class TaskPostgresRepository {
       }
     });
     if (!taskToDelete) throw newError(NOT_FOUND, 'No task matches this request');
-    return this.repository.remove(taskToDelete);
+    await this.repository.delete(taskToDelete.id);
+    return taskToDelete;
   }
 }
