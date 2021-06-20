@@ -9,7 +9,7 @@ export const APP_PORT: number = Number(PORT) || 4000;
 
 const onConnect = () => {
   createApp().listen(APP_PORT, () =>
-  logger('info', 'App is running on', { URL: `http://localhost:${APP_PORT}` })
+  logger('info', 'App is running on', `http://localhost:${APP_PORT}`)
   );
 }
 

@@ -1,7 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
 import { DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } from './config';
 
-export const PORT: number = Number(DB_PORT) || 4000;
+export const PORT: number = Number(DB_PORT) || 5432;
 
 export const connectionOptions: ConnectionOptions = {
   name: 'default',
