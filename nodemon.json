@@ -5,5 +5,7 @@
   "exec": "ts-node src/server.ts",
   "execMap": {
     "ts": "node -r ts-node/register"
-  }
+  },
+  "exitcrash": true,
+  "legacyWatch": true
 }

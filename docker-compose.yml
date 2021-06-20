@@ -1,0 +1,41 @@
+version: 3.8'
+
+services:
+  postgres:
+    image: postgres
+    build: ./src/database
+    networks:
+      - task6
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  node:
+    image: node
+    build: ./
+    networks:
+      - task6
+    container_name: node
+    volumes:
+      - ./log:/usr/src/app/log
+      - ./src:/usr/src/app/src
+    restart: on-failure
+    depends_on:
+      - postgres
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      PORT: ${PORT}
+
+networks:
+  task6:
+    driver: bridge
+
+volumes:
+  pgdata:
+    name: app-dbdata
