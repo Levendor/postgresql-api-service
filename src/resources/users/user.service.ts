@@ -2,15 +2,16 @@ import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { IRepository, TUserDTO, TUserToResponse } from '../../types/index';
 import { TaskMemoryRepository } from '../tasks/task.memory.repository';
+import { TaskPostgresRepository } from '../tasks/task.postgres.repository';
 import { User } from './';
 
 const { BAD_REQUEST } = StatusCodes;
 
 export class UserService {
   userRepository: IRepository<User>;
-  taskRepository: TaskMemoryRepository;
+  taskRepository: TaskMemoryRepository | TaskPostgresRepository;
 
-  constructor(userRepository: IRepository<User>, taskRepository: TaskMemoryRepository) {
+  constructor(userRepository: IRepository<User>, taskRepository: TaskMemoryRepository | TaskPostgresRepository) {
     this.userRepository = userRepository;
     this.taskRepository = taskRepository;
   }

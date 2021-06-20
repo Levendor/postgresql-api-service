@@ -1,11 +1,12 @@
 import { TTaskDTO } from "../../types";
 import { TaskMemoryRepository } from "./task.memory.repository";
 import { Task } from "./task.model";
+import { TaskPostgresRepository } from "./task.postgres.repository";
 
 export class TaskService {
-  taskRepository: TaskMemoryRepository;
+  taskRepository: TaskMemoryRepository | TaskPostgresRepository;
 
-  constructor(taskRepository: TaskMemoryRepository) {
+  constructor(taskRepository: TaskMemoryRepository | TaskPostgresRepository) {
     this.taskRepository = taskRepository;
   }
 

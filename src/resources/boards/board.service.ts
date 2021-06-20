@@ -1,12 +1,13 @@
 import { IRepository, TBoardDTO } from "../../types";
 import { TaskMemoryRepository } from "../tasks/task.memory.repository";
+import { TaskPostgresRepository } from "../tasks/task.postgres.repository";
 import { Board } from "./board.model";
 
 export class BoardService {
-  taskRepository: TaskMemoryRepository;
+  taskRepository: TaskMemoryRepository | TaskPostgresRepository;
   boardRepository: IRepository<Board>;
   
-  constructor(boardRepository: IRepository<Board>, taskRepository: TaskMemoryRepository) {
+  constructor(boardRepository: IRepository<Board>, taskRepository: TaskMemoryRepository | TaskPostgresRepository) {
     this.taskRepository = taskRepository;
     this.boardRepository = boardRepository;
   }
