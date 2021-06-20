@@ -40,6 +40,6 @@ export class UserPostgresRepository implements IRepository<User> {
   delete = async (userId: string): Promise<User> => {
     const userToDelete = await this.repository.findOne(userId);
     if (!userToDelete) throw newError(NOT_FOUND, 'No user matches this request');
-    return userToDelete;
+    return this.repository.remove(userToDelete);
   }
 }

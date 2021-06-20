@@ -50,7 +50,7 @@ export interface IRepository<T> {
   getAll(key?: string, id?: string): Promise<T[]> 
 
   getById(id: string): Promise<T>
-  getById(id: string, containerId?: string): Promise<T>
+  getById(id: string, containerId: string): Promise<T>
 
   create(entityBody: Partial<T>): Promise<T>;
   create(entityBody: Partial<T>, containerId: string): Promise<T>;

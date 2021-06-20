@@ -1,15 +1,15 @@
 import { createConnection } from 'typeorm';
 
-import { PORT } from './common/config';
 import { connectionOptions } from './common/ormconfig'
+import { PORT as ENV_PORT } from './common/config';
 import { createApp } from './app';
 import { logger } from './common/logger';
 
-export const APP_PORT: number = Number(PORT) || 4000;
+export const PORT: number = Number(ENV_PORT) || 4000;
 
 const onConnect = () => {
-  createApp().listen(APP_PORT, () =>
-  logger('info', 'App is running on', `http://localhost:${APP_PORT}`)
+  createApp().listen(PORT, () =>
+  logger('info', 'App is running on', `http://localhost:${PORT}`)
   );
 }
 
@@ -19,6 +19,14 @@ const onError = (error: Error) => {
   process.exit(1);
 }
 
+// In-memory database connection
+// try {
+//   onConnect()
+// } catch (error) {
+//   onError(error)
+// }
+
+// postgreSQL database connection
 createConnection(connectionOptions)
   .then(onConnect)
   .catch(onError);
