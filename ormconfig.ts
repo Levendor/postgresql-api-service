@@ -19,6 +19,12 @@ export default {
   migrations: [
      'src/database/migrations/*.ts'
   ],
+  seeds: [
+     'src/database/seeders/*.ts'
+  ],
+  factories: [
+     'src/database/factories/*.ts'
+  ],
   cli: {
      entitiesDir: 'src/database/entities',
      migrationsDir: 'src/database/migrations'

@@ -8,10 +8,11 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed && nodemon",
     "build": "tsc",
     "generate": "ts-node ./node_modules/typeorm/cli.js migration:generate",
     "migration": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
