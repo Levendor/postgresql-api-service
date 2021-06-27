@@ -10,24 +10,30 @@ import './common/unhandled-rejection';
 import { createUserRouter, UserController, UserService, UserRepository } from './resources/users';
 import { createBoardRouter, BoardController, BoardService, BoardRepository } from './resources/boards';
 import { createTaskRouter, TaskController, TaskService, TaskRepository } from './resources/tasks';
-import { serverIsRunning, requestLogger, errorHandler, notFound } from './middlewares';
+import { createLoginRouter, LoginController, LoginService } from './resources/login';
+import { serverIsRunning, requestLogger, errorHandler, notFound, authenticate } from './middlewares';
 import { StatusCodes } from 'http-status-codes';
 const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
 export const createApp = (): Express => {
   const app = express();
   const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
+
+  const userRepository = new UserRepository;
+  const taskRepository = new TaskRepository;
   
   app.use(cors());
   app.use(express.json());  
   app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));  
   app.use('/', serverIsRunning);
-
-  const taskRepository = new TaskRepository;
   
   app.use(requestLogger);
 
-  app.use('/users', createUserRouter(new UserController(new UserService(new UserRepository, taskRepository))));
+  app.use('/login', createLoginRouter(new LoginController(new LoginService)));
+
+  app.use(authenticate);
+
+  app.use('/users', createUserRouter(new UserController(new UserService(userRepository, taskRepository))));
   app.use('/boards', createBoardRouter(new BoardController(new BoardService(new BoardRepository, taskRepository))))
   app.use('/boards/:boardId/tasks', createTaskRouter(new TaskController(new TaskService(taskRepository))))
 
