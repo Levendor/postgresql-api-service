@@ -40,4 +40,4 @@ networks:
 
 volumes:
   pgdata:
-    name: app-dbdata
+    external: true

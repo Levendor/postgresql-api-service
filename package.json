@@ -8,10 +8,11 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed && nodemon",
     "build": "tsc",
     "generate": "ts-node ./node_modules/typeorm/cli.js migration:generate",
     "migration": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
@@ -46,24 +47,30 @@
     ]
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "7.0.3",
     "dotenv": "9.0.0",
     "express": "4.17.1",
     "http-errors": "^1.7.2",
     "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "4.1.6",
     "typeorm": "^0.2.34",
+    "typeorm-seeding": "^1.6.1",
     "uuid": "8.3.2",
     "winston": "^3.3.3",
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.12",
     "@types/http-errors": "^1.8.0",
+    "@types/jsonwebtoken": "^8.5.2",
     "@types/node": "^15.0.2",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/uuid": "^8.3.0",

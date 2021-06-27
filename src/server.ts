@@ -1,13 +1,15 @@
+import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import { PORT as ENV_PORT } from './common/config';
+import { PORT as ENV_PORT, DB_TYPE } from './common/config';
 import { createApp } from './app';
 import { logger } from './common/logger';
 
 export const PORT: number = Number(ENV_PORT) || 4000;
 
 const onConnect = () => {
+  logger('info', `Connect to ${DB_TYPE}`, '')
   createApp().listen(PORT, () =>
-  logger('info', 'App is running on', `http://localhost:${PORT}`)
+  logger('info', `App is running on http://localhost:${PORT}`, '')
   );
 }
 
@@ -19,9 +21,9 @@ const onError = (error: Error) => {
 
 // In-memory database connection
 // try {
-//   onConnect()
+//   onConnect();
 // } catch (error) {
-//   onError(error)
+//   onError(error);
 // }
 
 // postgreSQL database connection

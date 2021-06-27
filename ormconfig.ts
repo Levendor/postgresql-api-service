@@ -11,12 +11,19 @@ export default {
   username: DB_USER,
   password: DB_PASSWORD,
   synchronize: false,
+  migrationsRun: true,
   logging: false,
   entities: [
      'src/database/entities/*.ts'
   ],
   migrations: [
      'src/database/migrations/*.ts'
+  ],
+  seeds: [
+     'src/database/seeders/*.ts'
+  ],
+  factories: [
+     'src/database/factories/*.ts'
   ],
   cli: {
      entitiesDir: 'src/database/entities',

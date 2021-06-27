@@ -1,3 +1,4 @@
+import { hashSync } from 'bcryptjs';
 import newError from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { IRepository, TUserDTO, TUserToResponse } from '../../types/index';
@@ -30,6 +31,7 @@ export class UserService {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login)
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
+    userBody.password = hashSync(userBody.password!, 10);
     const newUser = await this.userRepository.create(userBody);
     return User.toResponse(newUser);
   }
@@ -38,6 +40,7 @@ export class UserService {
     const users = await this.userRepository.getAll();
     const isDuplicatedLogin = users.some((user) => user.login === userBody.login && user.id !== userBody.id);
     if (isDuplicatedLogin) throw newError(BAD_REQUEST, 'Login is occupied');
+    if (userBody.password) userBody.password = hashSync(userBody.password!, 10);
     const updatedUser = await this.userRepository.update(userBody);
     return User.toResponse(updatedUser);
   }
